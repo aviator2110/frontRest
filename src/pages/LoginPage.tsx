@@ -1,42 +1,95 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import { roleLabels, routeByRole, type Role } from "../data";
+
+type Role = "Admin" | "Bartender" | "Waiter" | "Cook";
+
+const routeByRole: Record<Role, string> = {
+    Admin: "/admin",
+    Waiter: "/hall",
+    Bartender: "/bar",
+    Cook: "/kitchen",
+};
 
 export function LoginPage() {
-  const [role, setRole] = useState<Role>("hall");
-  const navigate = useNavigate();
+    const [login, setLogin] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-  return (
-    <main className="app-shell auth-shell">
-      <section className="auth-card">
-        <div className="auth-badge">Restaurant OS</div>
-        <h1>Авторизация персонала</h1>
-        <p className="auth-text">
-          Вход в единую систему ресторана для зала, кухни, бара и администратора.
-        </p>
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role") as Role;
 
-        <form
-          className="auth-form"
-          onSubmit={(event) => {
-            event.preventDefault();
+        if (token && role) {
             navigate(routeByRole[role]);
-          }}
-        >
-          <label className="field">
-            <span>Логин</span>
-            <input type="text" placeholder="Введите логин" defaultValue="manager" />
-          </label>
+        }
+    }, []);
 
-          <label className="field">
-            <span>Пароль</span>
-            <input type="password" placeholder="Введите пароль" defaultValue="123456" />
-          </label>
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
 
-          <button className="primary-button" type="submit">
-            Войти в систему
-          </button>
-        </form>
-      </section>
-    </main>
+        try {
+            const response = await fetch("http://localhost:5113/api/Auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    login,
+                    password,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Invalid credentials");
+            }
+
+            const data = await response.json();
+
+            localStorage.setItem("token", data.data.token);
+            localStorage.setItem("role", data.data.role);
+
+            const userRole: Role = data.data.role;
+
+            navigate(routeByRole[userRole]);
+
+        } catch (error) {
+            console.error(error);
+            alert("Login failed");
+        }
+    };
+
+    return (
+        <main className="app-shell auth-shell">
+            <section className="auth-card">
+                <div className="auth-badge">Restaurant OS</div>
+                <h1>Authorization</h1>
+
+                <form className="auth-form" onSubmit={handleSubmit}>
+                    <label className="field">
+                        <span>Login</span>
+                        <input
+                            type="text"
+                            value={login}
+                            onChange={(e) => setLogin(e.target.value)}
+                            placeholder="Input login"
+                        />
+                    </label>
+
+                    <label className="field">
+                        <span>Password</span>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Input password"
+                        />
+                    </label>
+
+                    <button className="primary-button" type="submit">
+                        Sign in
+                    </button>
+                </form>
+            </section>
+        </main>
   );
 }

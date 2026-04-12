@@ -1,4 +1,4 @@
-export type Role = "hall" | "kitchen" | "bar" | "admin";
+export type Role = "waiter" | "cook" | "bartender" | "admin";
 
 export type TableItem = {
   id: number;
@@ -23,17 +23,17 @@ export type DrinkItem = {
 };
 
 export const roleLabels: Record<Role, string> = {
-  hall: "Зал",
-  kitchen: "Кухня",
-  bar: "Бар",
-  admin: "Админ"
+    waiter: "Зал",
+    cook: "Кухня",
+    bartender: "Бар",
+    admin: "Админ"
 };
 
 export const routeByRole: Record<Role, string> = {
-  hall: "/hall",
-  kitchen: "/kitchen",
-  bar: "/bar",
-  admin: "/admin"
+    waiter: "/hall",
+    cook: "/kitchen",
+    bartender: "/bar",
+    admin: "/admin"
 };
 
 export const tables: TableItem[] = [
@@ -60,11 +60,7 @@ export const barOrders: DrinkItem[] = [
 ];
 
 export const adminMenu = [
-  "Столы",
-  "Меню",
-  "Официанты",
-  "Кухня",
-  "Бар",
-  "Склад",
-  "Отчёты"
+  "Tables",
+  "Menu",
+  "Waiters"
 ];

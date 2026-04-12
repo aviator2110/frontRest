@@ -1,12 +1,10 @@
 type PageIntroProps = {
   title: string;
-  subtitle: string;
 };
 
-export function PageIntro({ title, subtitle }: PageIntroProps) {
+export function PageIntro({ title }: PageIntroProps) {
   return (
     <section className="page-intro">
-      <span>{subtitle}</span>
       <h2>{title}</h2>
     </section>
   );

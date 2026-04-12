@@ -24,5 +24,43 @@ export interface Order {
 }
 
 export interface OrderItem {
+    id: string;
+    productId: string;
+    productName: string;
+    quantity: number;
+    unitPrice: number;
+    totalPrice: number;
+    status: string;
+}
 
+export interface PanelAccount {
+    id: string;
+    login: string;
+    panelType: string;
+    isActive: boolean;
+    createdAt: string;
+}
+
+export interface Product {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    category: string;
+    isAvailable: boolean;
+    createdAt: string;
+}
+
+export interface Table {
+    id: string;
+    number: number;
+    isActive: boolean;
+}
+
+export interface Waiter {
+    id: string;
+    firstName: string;
+    lastName: string;
+    isActive: boolean;
+    createdAt: string;
 }

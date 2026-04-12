@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { roleLabels, type Role } from "../data";
 
 type LayoutProps = {
@@ -21,26 +21,18 @@ export function Layout({ children }: LayoutProps) {
     <main className="app-shell">
       <header className="topbar">
         <div>
-          <p className="eyebrow">Панель ресторана</p>
-          <h1>Управление сменой</h1>
+          <p className="eyebrow">Restaurant Panel</p>
           <p className="topbar-note">Активный раздел: {resolveSectionName(location.pathname)}</p>
         </div>
 
         <div className="topbar-actions">
-          <nav className="role-switcher" aria-label="Навигация по ролям">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.role}
-                to={item.to}
-                className={({ isActive }) => (isActive ? "role-chip active" : "role-chip")}
-              >
-                {roleLabels[item.role]}
-              </NavLink>
-            ))}
-          </nav>
 
-          <button className="ghost-button" type="button" onClick={() => navigate("/login")}>
-            Выйти
+          <button className="ghost-button" type="button" onClick={() => {
+              localStorage.removeItem("token")
+              localStorage.removeItem("role")
+              navigate("/login")
+          }}>
+            Log out
           </button>
         </div>
       </header>
