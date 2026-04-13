@@ -6,6 +6,8 @@ import { HallPage } from "./pages/HallPage";
 import { KitchenPage } from "./pages/KitchenPage";
 import { LoginPage } from "./pages/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AdminTablesPage } from "./pages/AdminTablesPage";
+import { AdminWaitersPage } from "./pages/AdminWaitersPage";
 
 function App() {
   return (
@@ -26,9 +28,18 @@ function App() {
               </Route>
               <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
                   <Route path="/admin" element={<AdminPage />}>
-                      <Route path="tables" element={<div>Tables content</div>} />
-                      <Route path="waiters" element={<div>Waiters content</div>} />
+
+                      <Route path="tables" element={<AdminTablesPage />} />
+                      <Route path="tables/create" element={<div>Create table</div>} />
+                      <Route path="tables/edit/:id" element={<div>Table info</div>} />
+
+                      <Route path="waiters" element={<AdminWaitersPage />}>
+                          <Route path="create" element={<div>Create waiter</div>} />
+                          <Route path="edit/:id" element={<div>Waiter info</div>} />
+                      </Route>
+
                       <Route path="menu" element={<div>Menu content</div>} />
+
                   </Route>
               </Route>
 

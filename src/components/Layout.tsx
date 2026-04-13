@@ -7,9 +7,9 @@ type LayoutProps = {
 };
 
 const navItems: Array<{ to: string; role: Role }> = [
-  { to: "/hall", role: "hall" },
-  { to: "/kitchen", role: "kitchen" },
-  { to: "/bar", role: "bar" },
+  { to: "/hall", role: "waiter" },
+  { to: "/kitchen", role: "cook" },
+  { to: "/bar", role: "bartender" },
   { to: "/admin", role: "admin" }
 ];
 

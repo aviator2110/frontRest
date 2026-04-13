@@ -4,7 +4,7 @@ import { tables } from "../data";
 export function HallPage() {
   return (
     <section className="role-page">
-      <PageIntro title="ЗАЛ" subtitle="Столы и текущая загрузка" />
+      <PageIntro title="ЗАЛ"/>
 
       <section className="sketch-panel hall-panel">
         <div className="sketch-block">
