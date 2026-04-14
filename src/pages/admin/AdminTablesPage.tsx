@@ -53,7 +53,9 @@ export function AdminTablesPage() {
             </button>
             <div className="table-grid expanded">
                 {tables.map((table) => (
-                    <article key={table.id} className="table-card sketch-card">
+                    <article key={table.id} className={`table-card sketch-card ${
+                        table.isActive ? "table-active" : "table-inactive"
+                    }`}>
                         <h3>Table {table.number}</h3>
                         <p>{table.isActive ? "Active" : "Inactive"}</p>
                         <button

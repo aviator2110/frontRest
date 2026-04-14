@@ -8,8 +8,13 @@ import { LoginPage } from "./pages/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AdminTablesPage } from "./pages/admin/AdminTablesPage";
 import { AdminWaitersPage } from "./pages/admin/AdminWaitersPage";
-import {AdminTableCreate} from "./pages/admin/AdminTableCreate";
-import {AdminTableEdit} from "./pages/admin/AdminTableEdit";
+import { AdminTableCreate } from "./pages/admin/AdminTableCreate";
+import { AdminTableEdit } from "./pages/admin/AdminTableEdit";
+import { AdminWaitersEdit } from "./pages/admin/AdminWaitersEdit";
+import { AdminWaitersCreate } from "./pages/admin/AdminWaitersCreate";
+import { AdminMenuPage } from "./pages/admin/AdminMenuPage";
+import { AdminMenuCreate } from "./pages/admin/AdminMenuCreate";
+import { AdminMenuEdit } from "./pages/admin/AdminMenuEdit";
 
 function App() {
   return (
@@ -36,10 +41,12 @@ function App() {
                       <Route path="tables/edit/:id" element={<AdminTableEdit />} />
 
                       <Route path="waiters" element={<AdminWaitersPage />} />
-                      <Route path="waiters/create" element={<div>Create waiter</div>} />
-                      <Route path="waiters/edit/:id" element={<div>Waiter info</div>} />
+                      <Route path="waiters/create" element={<AdminWaitersCreate />} />
+                      <Route path="waiters/edit/:id" element={<AdminWaitersEdit />} />
 
-                      <Route path="menu" element={<div>Menu content</div>} />
+                      <Route path="menu" element={<AdminMenuPage />} />
+                      <Route path="menu/create" element={<AdminMenuCreate />} />
+                      <Route path="menu/edit/:id" element={<AdminMenuEdit />} />
 
                   </Route>
               </Route>

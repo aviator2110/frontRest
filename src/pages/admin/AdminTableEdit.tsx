@@ -95,11 +95,11 @@ export function AdminTableEdit() {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <div>
+        <div className="form-container">
             <h2>Edit Table #{id}</h2>
 
-            <form className="auth-form" onSubmit={handleSubmit}>
-                <div>
+            <form className="form" onSubmit={handleSubmit}>
+                <div className="form-group">
                     <label>Table Number</label>
                     <input
                         type="number"
@@ -109,7 +109,7 @@ export function AdminTableEdit() {
                     />
                 </div>
 
-                <div>
+                <div className="form-checkbox">
                     <label>
                         <input
                             type="checkbox"
@@ -120,7 +120,9 @@ export function AdminTableEdit() {
                     </label>
                 </div>
 
-                <button type="submit">Save</button>
+                <button className="primary-button" type="submit">
+                    Save Changes
+                </button>
             </form>
         </div>
     );

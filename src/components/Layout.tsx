@@ -1,28 +1,18 @@
 import type { ReactNode } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { roleLabels, type Role } from "../data";
+import { useNavigate } from "react-router-dom";
 
 type LayoutProps = {
   children: ReactNode;
 };
 
-const navItems: Array<{ to: string; role: Role }> = [
-  { to: "/hall", role: "waiter" },
-  { to: "/kitchen", role: "cook" },
-  { to: "/bar", role: "bartender" },
-  { to: "/admin", role: "admin" }
-];
-
 export function Layout({ children }: LayoutProps) {
   const navigate = useNavigate();
-  const location = useLocation();
 
   return (
     <main className="app-shell">
       <header className="topbar">
         <div>
           <p className="eyebrow">Restaurant Panel</p>
-          <p className="topbar-note">Активный раздел: {resolveSectionName(location.pathname)}</p>
         </div>
 
         <div className="topbar-actions">
@@ -40,9 +30,4 @@ export function Layout({ children }: LayoutProps) {
       {children}
     </main>
   );
-}
-
-function resolveSectionName(pathname: string) {
-  const item = navItems.find((entry) => entry.to === pathname);
-  return item ? roleLabels[item.role] : "Панель";
 }

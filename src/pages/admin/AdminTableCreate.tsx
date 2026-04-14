@@ -46,11 +46,11 @@ export function AdminTableCreate() {
     };
 
     return (
-        <div>
+        <div className="form-container">
             <h2>Create Table</h2>
 
-            <form className="auth-form" onSubmit={handleSubmit}>
-                <div>
+            <form className="form" onSubmit={handleSubmit}>
+                <div className="form-group">
                     <label>Table Number</label>
                     <input
                         type="number"
@@ -60,7 +60,7 @@ export function AdminTableCreate() {
                     />
                 </div>
 
-                <div>
+                <div className="form-checkbox">
                     <label>
                         <input
                             type="checkbox"
@@ -71,7 +71,9 @@ export function AdminTableCreate() {
                     </label>
                 </div>
 
-                <button className="ghost-button" type="submit">Create</button>
+                <button className="primary-button" type="submit">
+                    Create
+                </button>
             </form>
         </div>
     );
