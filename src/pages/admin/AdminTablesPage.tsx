@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Table } from "../types/api";
+import { Table } from "../../types/api";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
@@ -44,12 +44,18 @@ export function AdminTablesPage() {
     return (
         <div>
             <h2>Tables</h2>
-
+            <button
+                className="ghost-button"
+                type="button"
+                onClick={() => navigate(`create`)}
+            >
+                Create
+            </button>
             <div className="table-grid expanded">
                 {tables.map((table) => (
                     <article key={table.id} className="table-card sketch-card">
                         <h3>Table {table.number}</h3>
-                        <p>{table.isActive}</p>
+                        <p>{table.isActive ? "Active" : "Inactive"}</p>
                         <button
                             className="ghost-button"
                             type="button"

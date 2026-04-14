@@ -1,13 +1,15 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
-import { AdminPage } from "./pages/AdminPage";
+import { AdminPage } from "./pages/admin/AdminPage";
 import { BarPage } from "./pages/BarPage";
 import { HallPage } from "./pages/HallPage";
 import { KitchenPage } from "./pages/KitchenPage";
 import { LoginPage } from "./pages/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { AdminTablesPage } from "./pages/AdminTablesPage";
-import { AdminWaitersPage } from "./pages/AdminWaitersPage";
+import { AdminTablesPage } from "./pages/admin/AdminTablesPage";
+import { AdminWaitersPage } from "./pages/admin/AdminWaitersPage";
+import {AdminTableCreate} from "./pages/admin/AdminTableCreate";
+import {AdminTableEdit} from "./pages/admin/AdminTableEdit";
 
 function App() {
   return (
@@ -30,13 +32,12 @@ function App() {
                   <Route path="/admin" element={<AdminPage />}>
 
                       <Route path="tables" element={<AdminTablesPage />} />
-                      <Route path="tables/create" element={<div>Create table</div>} />
-                      <Route path="tables/edit/:id" element={<div>Table info</div>} />
+                      <Route path="tables/create" element={<AdminTableCreate />} />
+                      <Route path="tables/edit/:id" element={<AdminTableEdit />} />
 
-                      <Route path="waiters" element={<AdminWaitersPage />}>
-                          <Route path="create" element={<div>Create waiter</div>} />
-                          <Route path="edit/:id" element={<div>Waiter info</div>} />
-                      </Route>
+                      <Route path="waiters" element={<AdminWaitersPage />} />
+                      <Route path="waiters/create" element={<div>Create waiter</div>} />
+                      <Route path="waiters/edit/:id" element={<div>Waiter info</div>} />
 
                       <Route path="menu" element={<div>Menu content</div>} />
 

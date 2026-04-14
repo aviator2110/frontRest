@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { PageIntro } from "../components/PageIntro";
-import { adminMenu } from "../data";
+import { PageIntro } from "../../components/PageIntro";
+import { adminMenu } from "../../data";
 
 export function AdminPage() {
     const navigate = useNavigate();
