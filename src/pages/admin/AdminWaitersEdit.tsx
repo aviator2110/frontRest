@@ -56,7 +56,7 @@ export function AdminWaitersEdit() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch("http://localhost:5113/api/waiters", {
+            const response = await fetch(`http://localhost:5113/api/waiters/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -94,8 +94,8 @@ export function AdminWaitersEdit() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch("http://localhost:5113/api/waiters/update-pin", {
-                method: "PUT",
+            const response = await fetch(`http://localhost:5113/api/waiters/${id}/pin`, {
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,

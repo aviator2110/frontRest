@@ -2,7 +2,7 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { AdminPage } from "./pages/admin/AdminPage";
 import { BarPage } from "./pages/BarPage";
-import { HallPage } from "./pages/HallPage";
+import { HallPage } from "./pages/hall/HallPage";
 import { KitchenPage } from "./pages/KitchenPage";
 import { LoginPage } from "./pages/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -15,6 +15,7 @@ import { AdminWaitersCreate } from "./pages/admin/AdminWaitersCreate";
 import { AdminMenuPage } from "./pages/admin/AdminMenuPage";
 import { AdminMenuCreate } from "./pages/admin/AdminMenuCreate";
 import { AdminMenuEdit } from "./pages/admin/AdminMenuEdit";
+import {HallTable} from "./pages/hall/HallTable";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
 
               <Route element={<ProtectedRoute allowedRoles={["Waiter"]} />}>
                   <Route path="/hall" element={<HallPage />} />
+                  <Route path="/hall/table/:id" element={<HallTable />} />
               </Route>
               <Route element={<ProtectedRoute allowedRoles={["Cook"]} />}>
                   <Route path="/kitchen" element={<KitchenPage />} />

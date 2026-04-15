@@ -453,6 +453,26 @@ a {
     transform: translateY(-1px);
 }
 
+.table-free {
+    background-color: #e8f5e9; /* мягкий зелёный */
+    border: 1px solid #a5d6a7;
+}
+
+.table-busy {
+    background-color: #fff8e1; /* мягкий жёлтый */
+    border: 1px solid #ffe082;
+}
+
+.clickable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clickable:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
 @media (max-width: 1080px) {
   .table-grid,
   .table-grid.expanded,
