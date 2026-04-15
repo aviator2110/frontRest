@@ -28,6 +28,7 @@ function App() {
               <Route element={<ProtectedRoute allowedRoles={["Waiter"]} />}>
                   <Route path="/hall" element={<HallPage />} />
                   <Route path="/hall/table/:id" element={<HallTable />} />
+                  <Route path="/hall/order/:id" element={<div></div>} />
               </Route>
               <Route element={<ProtectedRoute allowedRoles={["Cook"]} />}>
                   <Route path="/kitchen" element={<KitchenPage />} />
