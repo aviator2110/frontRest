@@ -9,26 +9,44 @@ type Order = {
     waiterName: string;
 };
 
+type Table = {
+    id: string;
+    number: number;
+    isActive: boolean;
+};
+
 export function HallTable() {
-    const { id } = useParams(); // tableId
+    const { id } = useParams(); // tableId (GUID)
     const navigate = useNavigate();
 
     const [order, setOrder] = useState<Order | null>(null);
+    const [table, setTable] = useState<Table | null>(null);
     const [pin, setPin] = useState("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchOrders = async () => {
+        const fetchData = async () => {
             const token = localStorage.getItem("token");
 
             try {
-                const res = await fetch("http://localhost:5113/api/orders/active", {
+                const tableRes = await fetch(`http://localhost:5113/api/Tables/${id}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-                const data = await res.json();
+                const tableData = await tableRes.json();
+                const currentTable: Table = tableData.data;
 
-                const found = data.data.find((o: any) => o.tableId === id);
+                setTable(currentTable);
+
+                const ordersRes = await fetch("http://localhost:5113/api/orders/active", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                const ordersData = await ordersRes.json();
+
+                const found = ordersData.data.find(
+                    (o: Order) => o.tableNumber === currentTable.number
+                );
 
                 setOrder(found || null);
 
@@ -39,14 +57,13 @@ export function HallTable() {
             }
         };
 
-        fetchOrders();
+        fetchData();
     }, [id]);
 
     const handleCheckPin = async () => {
         const token = localStorage.getItem("token");
 
         try {
-            // 🔹 1. получаем официанта по PIN
             const res = await fetch(
                 `http://localhost:5113/api/waiters/by-pin/${pin}`,
                 {
@@ -72,6 +89,11 @@ export function HallTable() {
                 return;
             }
 
+            if (!table) {
+                alert("Table not loaded");
+                return;
+            }
+
             const createRes = await fetch("http://localhost:5113/api/orders", {
                 method: "POST",
                 headers: {
@@ -80,7 +102,7 @@ export function HallTable() {
                 },
                 body: JSON.stringify({
                     createRequest: {
-                        tableId: id,
+                        tableId: table.id,
                         waiterId: waiter.id,
                     },
                     pinCode: pin,

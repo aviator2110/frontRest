@@ -16,6 +16,7 @@ import { AdminMenuPage } from "./pages/admin/AdminMenuPage";
 import { AdminMenuCreate } from "./pages/admin/AdminMenuCreate";
 import { AdminMenuEdit } from "./pages/admin/AdminMenuEdit";
 import {HallTable} from "./pages/hall/HallTable";
+import {HallOrder} from "./pages/hall/HallOrder";
 
 function App() {
   return (
@@ -28,7 +29,8 @@ function App() {
               <Route element={<ProtectedRoute allowedRoles={["Waiter"]} />}>
                   <Route path="/hall" element={<HallPage />} />
                   <Route path="/hall/table/:id" element={<HallTable />} />
-                  <Route path="/hall/order/:id" element={<div></div>} />
+                  <Route path="/hall/order/:id" element={<HallOrder />} />
+                  <Route path="/hall/order/:id/add-item" element={<div>add-item</div>} />
               </Route>
               <Route element={<ProtectedRoute allowedRoles={["Cook"]} />}>
                   <Route path="/kitchen" element={<KitchenPage />} />
