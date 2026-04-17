@@ -18,7 +18,6 @@ type Order = {
     status: string;
     startedAt: string;
     totalAmount: number;
-    items: OrderItem[];
 };
 
 export function HallOrder() {
@@ -26,18 +25,24 @@ export function HallOrder() {
     const { id } = useParams();
 
     const [order, setOrder] = useState<Order | null>(null);
+    const [items, setItems] = useState<OrderItem[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchOrder = async () => {
-        const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
+    const fetchData = async () => {
         try {
-            const res = await fetch(`http://localhost:5113/api/Orders/${id}`, {
+            const orderRes = await fetch(`http://localhost:5113/api/Orders/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
+            const orderData = await orderRes.json();
+            setOrder(orderData.data);
 
-            const data = await res.json();
-            setOrder(data.data);
+            const itemsRes = await fetch(`http://localhost:5113/api/OrderItems/order/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            const itemsData = await itemsRes.json();
+            setItems(itemsData.data);
 
         } catch (e) {
             console.error(e);
@@ -47,13 +52,13 @@ export function HallOrder() {
     };
 
     useEffect(() => {
-        fetchOrder();
+        fetchData();
     }, [id]);
 
-    const getOrderStatus = (order: Order) => {
-        if (order.items.length === 0) return "Created";
+    const getOrderStatus = () => {
+        if (items.length === 0) return "Created";
 
-        const statuses = order.items.map(i => i.status);
+        const statuses = items.map(i => i.status);
 
         if (statuses.every(s => s === "Cancelled")) return "Cancelled";
         if (statuses.every(s => s === "Served")) return "Served";
@@ -64,8 +69,6 @@ export function HallOrder() {
     };
 
     const updateOrderStatus = async (status: string) => {
-        const token = localStorage.getItem("token");
-
         try {
             await fetch(`http://localhost:5113/api/Orders/${id}/status`, {
                 method: "PATCH",
@@ -75,9 +78,7 @@ export function HallOrder() {
                 },
                 body: JSON.stringify({
                     id: id,
-                    updateStatusRequest: {
-                        status: status,
-                    },
+                    updateStatusRequest: { status },
                 }),
             });
         } catch (e) {
@@ -86,8 +87,6 @@ export function HallOrder() {
     };
 
     const handleServe = async (itemId: string) => {
-        const token = localStorage.getItem("token");
-
         try {
             const res = await fetch(
                 `http://localhost:5113/api/OrderItems/${itemId}/status`,
@@ -109,17 +108,46 @@ export function HallOrder() {
                 return;
             }
 
-            await fetchOrder();
+            await fetchData();
 
-            const updatedOrderRes = await fetch(`http://localhost:5113/api/Orders/${id}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            const updatedData = await updatedOrderRes.json();
+            setTimeout(async () => {
+                const newStatus = getOrderStatus();
+                await updateOrderStatus(newStatus);
+            }, 0);
 
-            const newStatus = getOrderStatus(updatedData.data);
-            await updateOrderStatus(newStatus);
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
-            fetchOrder();
+    const handleCancelItem = async (itemId: string) => {
+        try {
+            const res = await fetch(
+                `http://localhost:5113/api/OrderItems/${itemId}/status`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        id: itemId,
+                        status: "Cancelled",
+                    }),
+                }
+            );
+
+            if (!res.ok) {
+                alert("Ошибка при отмене");
+                return;
+            }
+
+            await fetchData();
+
+            setTimeout(async () => {
+                const newStatus = getOrderStatus();
+                await updateOrderStatus(newStatus);
+            }, 0);
 
         } catch (e) {
             console.error(e);
@@ -128,18 +156,18 @@ export function HallOrder() {
 
     const handleCancelOrder = async () => {
         await updateOrderStatus("Cancelled");
-        fetchOrder();
+        navigate("/hall");
     };
 
     const handleCompleteOrder = async () => {
         await updateOrderStatus("Completed");
-        fetchOrder();
+        navigate("/hall");
     };
 
     if (loading) return <div>Loading...</div>;
     if (!order) return <div>Order not found</div>;
 
-    const computedStatus = getOrderStatus(order);
+    const computedStatus = getOrderStatus();
 
     return (
         <section className="role-page">
@@ -163,32 +191,64 @@ export function HallOrder() {
                     </div>
 
                     <div style={{ marginTop: "20px" }}>
-                        <h3>Items</h3>
+                        <div style={{
+                            display: "grid",
+                            gridTemplateColumns: "2fr 1fr 1fr 1fr 2fr",
+                            fontWeight: "bold"
+                        }}>
+                            <span>Name</span>
+                            <span>Qty</span>
+                            <span>Price</span>
+                            <span>Total</span>
+                            <span>Status</span>
+                        </div>
 
-                        {order.items.length === 0 && <p>No items yet</p>}
+                        {items.length === 0 && <p>No items yet</p>}
 
-                        {order.items.map(item => (
-                            <div key={item.id} style={{ marginBottom: "10px" }}>
-                                <p><b>{item.productName}</b></p>
-                                <p>Qty: {item.quantity}</p>
-                                <p>Price: {item.unitPrice}</p>
-                                <p>Total: {item.totalPrice}</p>
-                                <p>Status: {item.status}</p>
+                        {items.map(item => (
+                            <div
+                                key={item.id}
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "2fr 1fr 1fr 1fr 2fr",
+                                    gap: "10px",
+                                    padding: "8px 0",
+                                    borderBottom: "1px solid #ccc",
+                                    alignItems: "center"
+                                }}
+                            >
+                                <span>{item.productName}</span>
+                                <span>x{item.quantity}</span>
+                                <span>{item.unitPrice} ₼</span>
+                                <span>{item.totalPrice} ₼</span>
 
-                                {item.status === "Ready" && (
-                                    <button
-                                        className="primary-button"
-                                        onClick={() => handleServe(item.id)}
-                                    >
-                                        Mark as Served
-                                    </button>
-                                )}
+                                <div style={{ display: "flex", gap: "5px" }}>
+                                    <span>{item.status}</span>
+
+                                    {item.status === "Ready" && (
+                                        <button
+                                            className="primary-button"
+                                            onClick={() => handleServe(item.id)}
+                                        >
+                                            Serve
+                                        </button>
+                                    )}
+
+                                    {item.status !== "Served" && item.status !== "Cancelled" && (
+                                        <button
+                                            className="ghost-button"
+                                            onClick={() => handleCancelItem(item.id)}
+                                        >
+                                            Cancel
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>
 
                     <div style={{ marginTop: "20px" }}>
-                        <h3>Total: {order.totalAmount}</h3>
+                        <h3>Total: {order.totalAmount} ₼</h3>
                     </div>
 
                     <div style={{ marginTop: "20px" }}>

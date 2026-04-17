@@ -16,7 +16,7 @@ type Table = {
 };
 
 export function HallTable() {
-    const { id } = useParams(); // tableId (GUID)
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const [order, setOrder] = useState<Order | null>(null);
