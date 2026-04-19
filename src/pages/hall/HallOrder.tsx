@@ -43,7 +43,6 @@ export function HallOrder() {
             });
             const itemsData = await itemsRes.json();
             setItems(itemsData.data);
-
         } catch (e) {
             console.error(e);
         } finally {
@@ -55,18 +54,14 @@ export function HallOrder() {
         fetchData();
     }, [id]);
 
-    const getOrderStatus = () => {
-        if (items.length === 0) return "Created";
-
-        const statuses = items.map(i => i.status);
-
-        if (statuses.every(s => s === "Cancelled")) return "Cancelled";
+    const computeStatusFromItems = (list: OrderItem[]) => {
+        if (list.length === 0) return "Created";
+        const statuses = list.map(i => i.status);
         if (statuses.every(s => s === "Served")) return "Served";
-        if (statuses.some(s => s === "Preparing")) return "InProgress";
-        if (statuses.some(s => s === "Ready")) return "Ready";
-
-        return "Created";
+        return "InProgress";
     };
+
+    const getOrderStatus = () => computeStatusFromItems(items);
 
     const updateOrderStatus = async (status: string) => {
         try {
@@ -81,6 +76,20 @@ export function HallOrder() {
                     updateStatusRequest: { status },
                 }),
             });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const recalcAndUpdateStatus = async () => {
+        try {
+            const res = await fetch(`http://localhost:5113/api/OrderItems/order/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            const freshItems: OrderItem[] = data.data || [];
+            const newStatus = computeStatusFromItems(freshItems);
+            await updateOrderStatus(newStatus);
         } catch (e) {
             console.error(e);
         }
@@ -109,12 +118,8 @@ export function HallOrder() {
             }
 
             await fetchData();
-
-            setTimeout(async () => {
-                const newStatus = getOrderStatus();
-                await updateOrderStatus(newStatus);
-            }, 0);
-
+            await recalcAndUpdateStatus();
+            await fetchData();
         } catch (e) {
             console.error(e);
         }
@@ -143,20 +148,42 @@ export function HallOrder() {
             }
 
             await fetchData();
-
-            setTimeout(async () => {
-                const newStatus = getOrderStatus();
-                await updateOrderStatus(newStatus);
-            }, 0);
-
+            await recalcAndUpdateStatus();
+            await fetchData();
         } catch (e) {
             console.error(e);
         }
     };
 
     const handleCancelOrder = async () => {
-        await updateOrderStatus("Cancelled");
-        navigate("/hall");
+        try {
+            const res = await fetch(`http://localhost:5113/api/OrderItems/order/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            const orderItems: OrderItem[] = data.data || [];
+
+            for (const item of orderItems) {
+                if (item.status !== "Served" && item.status !== "Cancelled") {
+                    await fetch(`http://localhost:5113/api/OrderItems/${item.id}/status`, {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                            id: item.id,
+                            status: "Cancelled",
+                        }),
+                    });
+                }
+            }
+
+            await updateOrderStatus("Cancelled");
+            navigate("/hall");
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const handleCompleteOrder = async () => {
