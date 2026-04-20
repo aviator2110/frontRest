@@ -57,7 +57,7 @@ export function HallOrder() {
     const computeStatusFromItems = (list: OrderItem[]) => {
         if (list.length === 0) return "Created";
         const statuses = list.map(i => i.status);
-        if (statuses.every(s => s === "Served")) return "Served";
+        if (statuses.every(s => s === "Served" || s === "Cancelled")) return "Served";
         return "InProgress";
     };
 
