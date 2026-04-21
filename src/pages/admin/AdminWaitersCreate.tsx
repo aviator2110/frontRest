@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../../components/Modal";
 
 export function AdminWaitersCreate() {
     const navigate = useNavigate();
@@ -7,12 +8,19 @@ export function AdminWaitersCreate() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [pin, setPin] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+
+    const showModal = (message: string) => {
+        setModalMessage(message);
+        setModalOpen(true);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!/^\d{4}$/.test(pin)) {
-            alert("PIN must be exactly 4 digits");
+            showModal("PIN must be exactly 4 digits");
             return;
         }
 
@@ -49,7 +57,7 @@ export function AdminWaitersCreate() {
 
         } catch (error) {
             console.error(error);
-            alert("Error creating waiter");
+            showModal("Error while creating waiter");
         }
     };
 
@@ -92,6 +100,11 @@ export function AdminWaitersCreate() {
                     Create
                 </button>
             </form>
+            <Modal
+                isOpen={modalOpen}
+                message={modalMessage}
+                onClose={() => setModalOpen(false)}
+            />
         </div>
     );
 }

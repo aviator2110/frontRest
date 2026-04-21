@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PageIntro } from "../../components/PageIntro";
+import { Modal } from "../../components/Modal";
 
 type Order = {
     id: string;
@@ -23,6 +24,13 @@ export function HallTable() {
     const [table, setTable] = useState<Table | null>(null);
     const [pin, setPin] = useState("");
     const [loading, setLoading] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+
+    const showModal = (message: string) => {
+        setModalMessage(message);
+        setModalOpen(true);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -72,7 +80,7 @@ export function HallTable() {
             );
 
             if (!res.ok) {
-                alert("Invalid PIN");
+                showModal("Invalid PIN");
                 return;
             }
 
@@ -81,7 +89,7 @@ export function HallTable() {
 
             if (order) {
                 if (waiter.id !== order.waiterId) {
-                    alert("Этот стол обслуживает другой официант");
+                    showModal("It is another waiter serving this table");
                     return;
                 }
 
@@ -90,7 +98,7 @@ export function HallTable() {
             }
 
             if (!table) {
-                alert("Table not loaded");
+                showModal("Table not found");
                 return;
             }
 
@@ -119,7 +127,7 @@ export function HallTable() {
 
         } catch (e) {
             console.error(e);
-            alert("Error");
+            showModal("Error");
         }
     };
 
@@ -186,6 +194,11 @@ export function HallTable() {
 
                 </div>
             </section>
+            <Modal
+                isOpen={modalOpen}
+                message={modalMessage}
+                onClose={() => setModalOpen(false)}
+            />
         </section>
     );
 }

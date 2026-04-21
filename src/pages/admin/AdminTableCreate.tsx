@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../../components/Modal";
 
 export function AdminTableCreate() {
     const [number, setNumber] = useState("");
     const [isActive, setIsActive] = useState(true);
     const navigate = useNavigate();
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+
+    const showModal = (message: string) => {
+        setModalMessage(message);
+        setModalOpen(true);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,7 +49,7 @@ export function AdminTableCreate() {
 
         } catch (error) {
             console.error(error);
-            alert("Error creating table");
+            showModal("Error creating table");
         }
     };
 
@@ -75,6 +83,11 @@ export function AdminTableCreate() {
                     Create
                 </button>
             </form>
+            <Modal
+                isOpen={modalOpen}
+                message={modalMessage}
+                onClose={() => setModalOpen(false)}
+            />
         </div>
     );
 }

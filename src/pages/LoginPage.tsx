@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../components/Modal";
 
 type Role = "Admin" | "Bartender" | "Waiter" | "Cook";
 
@@ -13,7 +14,14 @@ const routeByRole: Record<Role, string> = {
 export function LoginPage() {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
     const navigate = useNavigate();
+
+    const showModal = (message: string) => {
+        setModalMessage(message);
+        setModalOpen(true);
+    };
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -54,7 +62,7 @@ export function LoginPage() {
 
         } catch (error) {
             console.error(error);
-            alert("Login failed");
+            showModal("Login Error");
         }
     };
 
@@ -90,6 +98,11 @@ export function LoginPage() {
                     </button>
                 </form>
             </section>
+            <Modal
+                isOpen={modalOpen}
+                message={modalMessage}
+                onClose={() => setModalOpen(false)}
+            />
         </main>
   );
 }

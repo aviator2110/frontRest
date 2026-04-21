@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Modal } from "../../components/Modal";
 
 const categories = [
     "Appetizer",
@@ -18,10 +19,15 @@ export function AdminMenuEdit() {
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState(categories[0]);
     const [isAvailable, setIsAvailable] = useState(true);
-
     const [loading, setLoading] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
 
-    // 🔹 загрузка данных
+    const showModal = (message: string) => {
+        setModalMessage(message);
+        setModalOpen(true);
+    };
+
     useEffect(() => {
         const fetchItem = async () => {
             const token = localStorage.getItem("token");
@@ -67,7 +73,6 @@ export function AdminMenuEdit() {
         if (id) fetchItem();
     }, [id]);
 
-    // 🔹 отправка
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -110,7 +115,7 @@ export function AdminMenuEdit() {
 
         } catch (error) {
             console.error(error);
-            alert("Error updating product");
+            showModal("Error updating product");
         }
     };
 
@@ -149,7 +154,6 @@ export function AdminMenuEdit() {
                     />
                 </div>
 
-                {/* 🔥 SELECT категории */}
                 <div className="form-group">
                     <label>Category</label>
                     <select
@@ -179,6 +183,11 @@ export function AdminMenuEdit() {
                     Save Changes
                 </button>
             </form>
+            <Modal
+                isOpen={modalOpen}
+                message={modalMessage}
+                onClose={() => setModalOpen(false)}
+            />
         </div>
     );
 }

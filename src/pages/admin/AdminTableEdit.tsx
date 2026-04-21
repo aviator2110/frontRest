@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Modal } from "../../components/Modal";
 
 export function AdminTableEdit() {
     const { id } = useParams();
@@ -8,6 +9,13 @@ export function AdminTableEdit() {
     const [number, setNumber] = useState("");
     const [isActive, setIsActive] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+
+    const showModal = (message: string) => {
+        setModalMessage(message);
+        setModalOpen(true);
+    };
 
     useEffect(() => {
         const fetchTable = async () => {
@@ -46,7 +54,6 @@ export function AdminTableEdit() {
         fetchTable();
     }, [id]);
 
-    // 🔹 отправка
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -83,12 +90,11 @@ export function AdminTableEdit() {
                 throw new Error("Failed to update table");
             }
 
-            // 👉 назад к списку
             navigate("/admin/tables");
 
         } catch (error) {
             console.error(error);
-            alert("Error updating table");
+            showModal("Error updating table");
         }
     };
 
@@ -124,6 +130,11 @@ export function AdminTableEdit() {
                     Save Changes
                 </button>
             </form>
+            <Modal
+                isOpen={modalOpen}
+                message={modalMessage}
+                onClose={() => setModalOpen(false)}
+            />
         </div>
     );
 }

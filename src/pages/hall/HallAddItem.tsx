@@ -1,6 +1,7 @@
 import { PageIntro } from "../../components/PageIntro";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Modal } from "../../components/Modal";
 
 type Product = {
     id: string;
@@ -17,6 +18,13 @@ export function HallAddItem() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [quantities, setQuantities] = useState<Record<string, number>>({});
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+
+    const showModal = (message: string) => {
+        setModalMessage(message);
+        setModalOpen(true);
+    };
 
     const token = localStorage.getItem("token");
 
@@ -83,7 +91,7 @@ export function HallAddItem() {
             });
 
             if (!res.ok) {
-                alert("Ошибка при добавлении");
+                showModal("Error while adding product");
                 return;
             }
 
@@ -180,6 +188,11 @@ export function HallAddItem() {
 
                 </div>
             </section>
+            <Modal
+                isOpen={modalOpen}
+                message={modalMessage}
+                onClose={() => setModalOpen(false)}
+            />
         </section>
     );
 }

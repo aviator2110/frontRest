@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../../components/Modal";
 
 const categories = [
     "Appetizer",
@@ -17,6 +18,13 @@ export function AdminMenuCreate() {
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState(categories[0]);
     const [isAvailable, setIsAvailable] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+
+    const showModal = (message: string) => {
+        setModalMessage(message);
+        setModalOpen(true);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -56,7 +64,7 @@ export function AdminMenuCreate() {
 
         } catch (error) {
             console.error(error);
-            alert("Error creating product");
+            showModal("Error creating product");
         }
     };
 
@@ -122,6 +130,11 @@ export function AdminMenuCreate() {
                     Create
                 </button>
             </form>
+            <Modal
+                isOpen={modalOpen}
+                message={modalMessage}
+                onClose={() => setModalOpen(false)}
+            />
         </div>
     );
 }

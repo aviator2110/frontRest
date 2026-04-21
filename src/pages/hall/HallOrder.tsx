@@ -1,6 +1,7 @@
 import { PageIntro } from "../../components/PageIntro";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Modal } from "../../components/Modal";
 
 type OrderItem = {
     id: string;
@@ -27,6 +28,13 @@ export function HallOrder() {
     const [order, setOrder] = useState<Order | null>(null);
     const [items, setItems] = useState<OrderItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+
+    const showModal = (message: string) => {
+        setModalMessage(message);
+        setModalOpen(true);
+    };
 
     const token = localStorage.getItem("token");
 
@@ -113,7 +121,7 @@ export function HallOrder() {
             );
 
             if (!res.ok) {
-                alert("Ошибка");
+                showModal("Error");
                 return;
             }
 
@@ -143,7 +151,7 @@ export function HallOrder() {
             );
 
             if (!res.ok) {
-                alert("Ошибка при отмене");
+                showModal("Error while canceling order");
                 return;
             }
 
@@ -307,6 +315,11 @@ export function HallOrder() {
 
                 </div>
             </section>
+            <Modal
+                isOpen={modalOpen}
+                message={modalMessage}
+                onClose={() => setModalOpen(false)}
+            />
         </section>
     );
 }

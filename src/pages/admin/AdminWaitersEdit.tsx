@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Modal } from "../../components/Modal";
 
 export function AdminWaitersEdit() {
     const { id } = useParams();
@@ -9,8 +10,14 @@ export function AdminWaitersEdit() {
     const [lastName, setLastName] = useState("");
     const [isActive, setIsActive] = useState(true);
     const [pin, setPin] = useState("");
-
     const [loading, setLoading] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+
+    const showModal = (message: string) => {
+        setModalMessage(message);
+        setModalOpen(true);
+    };
 
     useEffect(() => {
         const fetchWaiter = async () => {
@@ -76,8 +83,7 @@ export function AdminWaitersEdit() {
                 throw new Error("Failed to update waiter");
             }
 
-            alert("Updated successfully");
-
+            showModal("Updated successfully");
         } catch (error) {
             console.error(error);
         }
@@ -87,7 +93,7 @@ export function AdminWaitersEdit() {
         e.preventDefault();
 
         if (pin.length !== 4) {
-            alert("PIN must be 4 digits");
+            showModal("PIN must be 4 digits")
             return;
         }
 
@@ -110,9 +116,8 @@ export function AdminWaitersEdit() {
                 throw new Error("Failed to update PIN");
             }
 
-            alert("PIN updated");
+            showModal("PIN updated successfully");
             setPin("");
-
         } catch (error) {
             console.error(error);
         }
@@ -177,6 +182,11 @@ export function AdminWaitersEdit() {
                     Update PIN
                 </button>
             </form>
+            <Modal
+                isOpen={modalOpen}
+                message={modalMessage}
+                onClose={() => setModalOpen(false)}
+            />
         </div>
     );
 }
