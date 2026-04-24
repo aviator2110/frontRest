@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../../components/Modal";
+import { apiLink } from "../../data";
 
 export function AdminTableCreate() {
     const [number, setNumber] = useState("");
@@ -20,7 +21,7 @@ export function AdminTableCreate() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch("http://localhost:5113/api/tables", {
+            const response = await fetch(`${apiLink}/tables`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

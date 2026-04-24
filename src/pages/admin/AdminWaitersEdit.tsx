@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Modal } from "../../components/Modal";
+import { apiLink } from "../../data";
 
 export function AdminWaitersEdit() {
     const { id } = useParams();
@@ -24,7 +25,7 @@ export function AdminWaitersEdit() {
             const token = localStorage.getItem("token");
 
             try {
-                const response = await fetch(`http://localhost:5113/api/waiters/${id}`, {
+                const response = await fetch(`${apiLink}/waiters/${id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -63,7 +64,7 @@ export function AdminWaitersEdit() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch(`http://localhost:5113/api/waiters/${id}`, {
+            const response = await fetch(`${apiLink}/waiters/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -100,7 +101,7 @@ export function AdminWaitersEdit() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch(`http://localhost:5113/api/waiters/${id}/pin`, {
+            const response = await fetch(`${apiLink}/waiters/${id}/pin`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

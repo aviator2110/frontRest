@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Modal } from "../../components/Modal";
+import { apiLink } from "../../data";
 
 export function AdminTableEdit() {
     const { id } = useParams();
@@ -22,7 +23,7 @@ export function AdminTableEdit() {
             const token = localStorage.getItem("token");
 
             try {
-                const response = await fetch(`http://localhost:5113/api/tables/${id}`, {
+                const response = await fetch(`${apiLink}/tables/${id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -60,7 +61,7 @@ export function AdminTableEdit() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch(`http://localhost:5113/api/tables/${id}`, {
+            const response = await fetch(`${apiLink}/tables/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

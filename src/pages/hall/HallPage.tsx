@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageIntro } from "../../components/PageIntro";
+import { apiLink } from "../../data";
 
 type Table = {
     id: string;
@@ -26,10 +27,10 @@ export function HallPage() {
 
             try {
                 const [tablesRes, ordersRes] = await Promise.all([
-                    fetch("http://localhost:5113/api/tables/active", {
+                    fetch(`${apiLink}/tables/active`, {
                         headers: { Authorization: `Bearer ${token}` },
                     }),
-                    fetch("http://localhost:5113/api/orders/active", {
+                    fetch(`${apiLink}/orders/active`, {
                         headers: { Authorization: `Bearer ${token}` },
                     }),
                 ]);

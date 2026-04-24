@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../../components/Modal";
+import { apiLink } from "../../data";
 
 export function AdminWaitersCreate() {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ export function AdminWaitersCreate() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch("http://localhost:5113/api/waiters", {
+            const response = await fetch(`${apiLink}/waiters`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

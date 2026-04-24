@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../../components/Modal";
+import { apiLink } from "../../data";
 
 const categories = [
     "Appetizer",
@@ -32,7 +33,7 @@ export function AdminMenuCreate() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch("http://localhost:5113/api/products", {
+            const response = await fetch(`${apiLink}/products`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

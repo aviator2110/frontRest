@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Table } from "../../types/api";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { apiLink } from "../../data";
 
 export function AdminTablesPage() {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ export function AdminTablesPage() {
             const token = localStorage.getItem("token");
 
             try {
-                const response = await fetch("http://localhost:5113/api/tables", {
+                const response = await fetch(`${apiLink}/tables`, {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${token}`,

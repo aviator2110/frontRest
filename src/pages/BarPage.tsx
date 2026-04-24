@@ -1,5 +1,6 @@
 import { PageIntro } from "../components/PageIntro";
 import { useEffect, useRef, useState } from "react";
+import { apiLink } from "../data";
 
 type OrderItem = {
     id: string;
@@ -41,7 +42,7 @@ export function BarPage() {
 
     const fetchData = async (): Promise<void> => {
         try {
-            const res: Response = await fetch("http://localhost:5113/api/OrderItems/pending", {
+            const res: Response = await fetch(`${apiLink}/OrderItems/pending`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -76,7 +77,7 @@ export function BarPage() {
             await Promise.all(
                 uniqueOrderIds.map(async (orderId: string): Promise<void> => {
                     const res: Response = await fetch(
-                        `http://localhost:5113/api/Orders/${orderId}`,
+                        `${apiLink}/Orders/${orderId}`,
                         {
                             headers: { Authorization: `Bearer ${token}` },
                         }
@@ -106,7 +107,7 @@ export function BarPage() {
         status: string
     ): Promise<void> => {
         try {
-            await fetch(`http://localhost:5113/api/OrderItems/${itemId}/status`, {
+            await fetch(`${apiLink}/OrderItems/${itemId}/status`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

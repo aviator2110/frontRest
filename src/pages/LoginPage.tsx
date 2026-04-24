@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../components/Modal";
+import { apiLink } from "../data";
 
 type Role = "Admin" | "Bartender" | "Waiter" | "Cook";
 
@@ -36,7 +37,7 @@ export function LoginPage() {
         event.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:5113/api/Auth/login", {
+            const response = await fetch(`${apiLink}/Auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

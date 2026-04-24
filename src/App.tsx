@@ -15,9 +15,9 @@ import { AdminWaitersCreate } from "./pages/admin/AdminWaitersCreate";
 import { AdminMenuPage } from "./pages/admin/AdminMenuPage";
 import { AdminMenuCreate } from "./pages/admin/AdminMenuCreate";
 import { AdminMenuEdit } from "./pages/admin/AdminMenuEdit";
-import {HallTable} from "./pages/hall/HallTable";
-import {HallOrder} from "./pages/hall/HallOrder";
-import {HallAddItem} from "./pages/hall/HallAddItem";
+import { HallTable } from "./pages/hall/HallTable";
+import { HallOrder } from "./pages/hall/HallOrder";
+import { HallAddItem } from "./pages/hall/HallAddItem";
 
 function App() {
   return (

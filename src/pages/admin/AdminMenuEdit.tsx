@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Modal } from "../../components/Modal";
+import { apiLink } from "../../data";
 
 const categories = [
     "Appetizer",
@@ -34,7 +35,7 @@ export function AdminMenuEdit() {
 
             try {
                 const response = await fetch(
-                    `http://localhost:5113/api/products/${id}`,
+                    `${apiLink}/products/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -80,7 +81,7 @@ export function AdminMenuEdit() {
 
         try {
             const response = await fetch(
-                `http://localhost:5113/api/products/${id}`,
+                `${apiLink}/products/${id}`,
                 {
                     method: "PUT",
                     headers: {

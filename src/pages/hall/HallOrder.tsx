@@ -2,6 +2,7 @@ import { PageIntro } from "../../components/PageIntro";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Modal } from "../../components/Modal";
+import { apiLink } from "../../data";
 
 type OrderItem = {
     id: string;
@@ -40,13 +41,13 @@ export function HallOrder() {
 
     const fetchData = async () => {
         try {
-            const orderRes = await fetch(`http://localhost:5113/api/Orders/${id}`, {
+            const orderRes = await fetch(`${apiLink}/Orders/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const orderData = await orderRes.json();
             setOrder(orderData.data);
 
-            const itemsRes = await fetch(`http://localhost:5113/api/OrderItems/order/${id}`, {
+            const itemsRes = await fetch(`${apiLink}/OrderItems/order/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const itemsData = await itemsRes.json();
@@ -73,7 +74,7 @@ export function HallOrder() {
 
     const updateOrderStatus = async (status: string) => {
         try {
-            await fetch(`http://localhost:5113/api/Orders/${id}/status`, {
+            await fetch(`${apiLink}/Orders/${id}/status`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -91,7 +92,7 @@ export function HallOrder() {
 
     const recalcAndUpdateStatus = async () => {
         try {
-            const res = await fetch(`http://localhost:5113/api/OrderItems/order/${id}`, {
+            const res = await fetch(`${apiLink}/OrderItems/order/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await res.json();
@@ -106,7 +107,7 @@ export function HallOrder() {
     const handleServe = async (itemId: string) => {
         try {
             const res = await fetch(
-                `http://localhost:5113/api/OrderItems/${itemId}/status`,
+                `${apiLink}/OrderItems/${itemId}/status`,
                 {
                     method: "PATCH",
                     headers: {
@@ -136,7 +137,7 @@ export function HallOrder() {
     const handleCancelItem = async (itemId: string) => {
         try {
             const res = await fetch(
-                `http://localhost:5113/api/OrderItems/${itemId}/status`,
+                `${apiLink}/OrderItems/${itemId}/status`,
                 {
                     method: "PATCH",
                     headers: {
@@ -165,7 +166,7 @@ export function HallOrder() {
 
     const handleCancelOrder = async () => {
         try {
-            const res = await fetch(`http://localhost:5113/api/OrderItems/order/${id}`, {
+            const res = await fetch(`${apiLink}/OrderItems/order/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await res.json();
@@ -173,7 +174,7 @@ export function HallOrder() {
 
             for (const item of orderItems) {
                 if (item.status !== "Served" && item.status !== "Cancelled") {
-                    await fetch(`http://localhost:5113/api/OrderItems/${item.id}/status`, {
+                    await fetch(`${apiLink}/OrderItems/${item.id}/status`, {
                         method: "PATCH",
                         headers: {
                             "Content-Type": "application/json",

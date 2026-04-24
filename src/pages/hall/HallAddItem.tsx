@@ -2,6 +2,7 @@ import { PageIntro } from "../../components/PageIntro";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Modal } from "../../components/Modal";
+import { apiLink } from "../../data";
 
 type Product = {
     id: string;
@@ -31,7 +32,7 @@ export function HallAddItem() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await fetch("http://localhost:5113/api/Products/available", {
+                const res = await fetch(`${apiLink}/Products/available`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -74,7 +75,7 @@ export function HallAddItem() {
         if (quantity <= 0) return;
 
         try {
-            const res = await fetch(`http://localhost:5113/api/OrderItems`, {
+            const res = await fetch(`${apiLink}/OrderItems`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { apiLink } from "../../data";
 
 type Waiter = {
     id: string;
@@ -18,7 +19,7 @@ export function AdminWaitersPage() {
             const token = localStorage.getItem("token");
 
             try {
-                const response = await fetch("http://localhost:5113/api/waiters", {
+                const response = await fetch(`${apiLink}/waiters`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

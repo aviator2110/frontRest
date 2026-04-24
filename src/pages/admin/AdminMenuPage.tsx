@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiLink } from "../../data";
 
 type MenuItem = {
     id: string;
@@ -28,7 +29,7 @@ export function AdminMenuPage() {
             const token = localStorage.getItem("token");
 
             try {
-                const response = await fetch("http://localhost:5113/api/Products", {
+                const response = await fetch(`${apiLink}/Products`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

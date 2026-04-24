@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PageIntro } from "../../components/PageIntro";
 import { Modal } from "../../components/Modal";
+import { apiLink } from "../../data";
 
 type Order = {
     id: string;
@@ -37,7 +38,7 @@ export function HallTable() {
             const token = localStorage.getItem("token");
 
             try {
-                const tableRes = await fetch(`http://localhost:5113/api/Tables/${id}`, {
+                const tableRes = await fetch(`${apiLink}/Tables/${id}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -46,7 +47,7 @@ export function HallTable() {
 
                 setTable(currentTable);
 
-                const ordersRes = await fetch("http://localhost:5113/api/orders/active", {
+                const ordersRes = await fetch(`${apiLink}/orders/active`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -73,7 +74,7 @@ export function HallTable() {
 
         try {
             const res = await fetch(
-                `http://localhost:5113/api/waiters/by-pin/${pin}`,
+                `${apiLink}/waiters/by-pin/${pin}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -102,7 +103,7 @@ export function HallTable() {
                 return;
             }
 
-            const createRes = await fetch("http://localhost:5113/api/orders", {
+            const createRes = await fetch(`${apiLink}/orders`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
