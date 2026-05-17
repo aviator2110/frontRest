@@ -26,5 +26,6 @@ export function isTokenExpired(token: string): boolean {
     }
 }
 
-export const apiLink = "http://18.185.101.74/api";
+export const apiLink = "/api";
+// export const apiLink = "http://18.185.101.74/api";
 // export const apiLink = "http://localhost:5113/api";
