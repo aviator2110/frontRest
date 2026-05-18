@@ -71,7 +71,7 @@ export function LoginPage() {
         <main className="app-shell auth-shell">
             <section className="auth-card">
                 <div className="auth-badge">Restaurant OS</div>
-                <h1>Check-IN</h1>
+                <h1>Authorization</h1>
 
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <label className="field">
