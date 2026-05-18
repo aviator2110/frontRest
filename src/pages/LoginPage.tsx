@@ -75,7 +75,7 @@ export function LoginPage() {
 
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <label className="field">
-                        <span>Login</span>
+                        <span>Loginator3000</span>
                         <input
                             type="text"
                             value={login}
